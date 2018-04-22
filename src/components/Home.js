@@ -1,5 +1,16 @@
+               //          <div className="row">
+                              // <ul id="reservations">                             
+                              //   <li class="reservation">
+                              //     Item1 
+                              //   </li> 
+            //                     <li class="reservation">
+            //                       Item2
+            //                     </li>                                        
+                              // </ul>
+                  //       </div>
 import React, { Component } from 'react'
 import { Search } from './containers'
+import { Results } from './containers'
 
 class Home extends Component {
 
@@ -24,16 +35,7 @@ class Home extends Component {
         	        </div>
 
         	        <div className="col-md-5">
-        	            <div className="row">
-						      <ul id="reservations">						        
-						        <li class="reservation">
-						          Item1 
-						        </li> 
-                                <li class="reservation">
-                                  Item2
-                                </li>        						        
-						      </ul>
-		                </div>
+                        <Results />
         	        </div> 
 
         	        <div className="col-md-3">
