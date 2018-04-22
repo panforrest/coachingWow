@@ -437,20 +437,14 @@ var Home = function (_Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'row' },
-                            _react2.default.createElement(
-                                'ul',
-                                { id: 'reservations' },
-                                _react2.default.createElement(
-                                    'li',
-                                    { 'class': 'reservation' },
-                                    'Item1'
-                                ),
-                                _react2.default.createElement(
-                                    'li',
-                                    { 'class': 'reservation' },
-                                    'Item2'
-                                )
-                            )
+                            'Item ',
+                            _react2.default.createElement('br', null),
+                            'Item ',
+                            _react2.default.createElement('br', null),
+                            'Item ',
+                            _react2.default.createElement('br', null),
+                            'Item ',
+                            _react2.default.createElement('br', null)
                         )
                     ),
                     _react2.default.createElement(
