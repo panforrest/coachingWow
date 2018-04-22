@@ -958,15 +958,15 @@ exports.default = function () {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	var action = arguments[1];
 
-	var updatedState = Object.assign({}, state);
+	var newState = Object.assign({}, state);
 
 	switch (action.type) {
 		case 'ITEM_ADDED':
 			// console.log('ITEM_ADDED: '+JSON.stringify(action.data))
 			// let all = Object.assign([], newState.all)
-			var all = updatedState.all ? Object.assign([], updatedState.all) : [];
+			var all = newState.all ? Object.assign([], newState.all) : [];
 			all.push(action.data);
-			updatedState['all'] = all;
+			updatedState['all'] = array;
 			return updatedState;
 
 		// case constants.USER_CREATED:

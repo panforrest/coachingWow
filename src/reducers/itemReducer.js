@@ -10,11 +10,22 @@ var initialState = {
 }
 
 export default (state = initialState, action) => {
-	let newState = Object.assign({}, state)
+	let updatedState = Object.assign({}, state)
 
 	switch (action.type) {
+        case 'ITEM_ADDED':
+          // console.log('ITEM_ADDED: '+JSON.stringify(action.data))
+          // let all = Object.assign([], newState.all)
+          let all = (updatedState.all) ? Object.assign([], updatedState.all) : []
+          all.push(action.data)
+          updatedState['all'] = all
+          return updatedState
 
-
+		// case constants.USER_CREATED:
+		// 	let array = (newState.all) ? Object.assign([], newState.all) : []
+		// 	array.unshift(action.data)
+		// 	newState['all'] = array
+		// 	return newState
 
 		// case constants.CURRENT_USER_RECEIVED:
 		// 	newState['currentUser'] = action.data
@@ -24,11 +35,7 @@ export default (state = initialState, action) => {
 		// 	newState['all'] = action.data
 		// 	return newState
 
-		// case constants.USER_CREATED:
-		// 	let array = (newState.all) ? Object.assign([], newState.all) : []
-		// 	array.unshift(action.data)
-		// 	newState['all'] = array
-		// 	return newState
+
 
 		default:
 			return state

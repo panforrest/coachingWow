@@ -70,13 +70,14 @@ module.exports = {
 				exclude: /(node_modules|bower_components)/,
 				loader: 'babel-loader',
 				query:{
-					presets:['react', 'env']
+					// presets:['react', 'env']
+					presets:['react', 'es2015']
 				}
 			},
-			{
-				test: /\.json$/,
-				loader: 'json-loader'
-			},
+			// {
+			// 	test: /\.json$/,
+			// 	loader: 'json-loader'
+			// },
 			{
 				test: /\.(jpg|png|svg)$/,
 				loader: 'file-loader',
