@@ -27,6 +27,18 @@ class Search extends Component {
 
         const items = this.props.item.all || []
 
+        let markers = []
+        items.forEach((item, i) => {
+        	const marker = {
+        		key: item.id,
+        		label: item.name,
+        		position: item.position,
+        		defaultAnimation: 2
+        	}
+
+        	markers.push(marker)
+        })
+
     	return(
 
             <div>
@@ -44,8 +56,8 @@ class Search extends Component {
 
                     locationChanged={this.centerChanged.bind(this)}
                     // this.props.changeLocation
-                    markers={items}
-				    zoom={14}
+                    markers={markers}
+				    zoom={12}
 				    center={{lat:40.7224017, lng:-73.9896719}}
 				    containerElement={<div style={{height:100+'%'}} />} 
 				    mapElement={<div style={{height:100+'vh'}} />} />

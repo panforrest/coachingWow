@@ -500,9 +500,11 @@ var Results = function (_Component) {
         value: function addItem() {
             // console.log('ADD ITEM: ' + JSON.stringify(this.state.item))
             var newItem = Object.assign({}, this.state.item);
-            newItem['id'] = 100;
-            newItem['key'] = '100';
-            newItem['defaultAnimation'] = 2;
+            var len = this.props.item.all.length + 1;
+            newItem['id'] = len.toString();
+            // newItem['id'] = 100
+            // newItem['key'] = '100'
+            // newItem['defaultAnimation'] = 2
             newItem['position'] = this.props.map.currentLocation;
             this.props.addItem(newItem);
         }
@@ -607,10 +609,11 @@ exports.default = function (props) {
         "div",
         { "class": "reservation" },
         _react2.default.createElement(
-          "h3",
+          "h2",
           null,
           item.label
         ),
+        _react2.default.createElement("img", { style: localStyle.icon, src: item.seller.image }),
         _react2.default.createElement(
           "span",
           { "class": "reservation-date" },
@@ -621,6 +624,10 @@ exports.default = function (props) {
       )
     )
   );
+};
+
+var localStyle = {
+  icon: { width: 28, borderRadius: 14, float: 'right' }
 };
 
 /***/ }),
@@ -796,6 +803,18 @@ var Search = function (_Component) {
 
 			var items = this.props.item.all || [];
 
+			var markers = [];
+			items.forEach(function (item, i) {
+				var marker = {
+					key: item.id,
+					label: item.name,
+					position: item.position,
+					defaultAnimation: 2
+				};
+
+				markers.push(marker);
+			});
+
 			return _react2.default.createElement(
 				'div',
 				null,
@@ -811,8 +830,8 @@ var Search = function (_Component) {
 
 					locationChanged: this.centerChanged.bind(this)
 					// this.props.changeLocation
-					, markers: items,
-					zoom: 14,
+					, markers: markers,
+					zoom: 12,
 					center: { lat: 40.7224017, lng: -73.9896719 },
 					containerElement: _react2.default.createElement('div', { style: { height: 100 + '%' } }),
 					mapElement: _react2.default.createElement('div', { style: { height: 100 + 'vh' } }) })
@@ -1034,7 +1053,7 @@ var _constants2 = _interopRequireDefault(_constants);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var initialState = {
-	all: [{ id: 1, key: '1', price: '10', defaultAnimation: 2, label: 'Ping Pong', position: { lat: 40.7224017, lng: -73.9896719 } }, { id: 2, key: '2', price: '10', defaultAnimation: 2, label: 'Ballroom Dance', position: { lat: 40.7224017, lng: -73.9996719 } }, { id: 4, key: '4', price: '20', defaultAnimation: 2, label: 'Rock Climbing', position: { lat: 40.7124017, lng: -73.9796719 } }]
+	all: [{ id: '1', price: 10, label: 'Ping Pong', position: { lat: 40.7224017, lng: -73.9896719 }, seller: { username: 'lebron_james', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '2', price: 20, label: 'Dance', position: { lat: 40.7124017, lng: -73.9996719 }, seller: { username: 'eli_manning', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '3', price: 30, label: 'Rock Climbing', position: { lat: 40.7024017, lng: -73.999671996719 }, seller: { username: 'tom_brady', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }]
 
 };
 

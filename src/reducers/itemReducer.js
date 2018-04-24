@@ -2,9 +2,9 @@ import constants from '../constants'
 
 var initialState = {
 	all: [
-            {id:1, key:'1', price:'10', defaultAnimation:2, label:'Ping Pong', position:{lat:40.7224017, lng:-73.9896719}},
-            {id:2, key:'2', price:'10', defaultAnimation:2, label:'Ballroom Dance', position:{lat:40.7224017, lng:-73.9996719}},
-            {id:4, key:'4', price:'20', defaultAnimation:2, label:'Rock Climbing', position:{lat:40.7124017, lng:-73.9796719}}
+	        {id:'1', price:10, label:'Ping Pong', position:{lat:40.7224017, lng:-73.9896719}, seller:{username:'lebron_james',image:'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png'}},
+	        {id:'2', price:20, label:'Dance', position:{lat:40.7124017, lng:-73.9996719}, seller:{username:'eli_manning',image:'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png'}},
+	        {id:'3', price:30, label:'Rock Climbing', position:{lat:40.7024017, lng:-73.999671996719}, seller:{username:'tom_brady',image:'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png'}}
         ]
 
 }
