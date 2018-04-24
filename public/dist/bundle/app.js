@@ -586,7 +586,7 @@ exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Result
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _react = __webpack_require__(0);
@@ -597,37 +597,52 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (props) {
 
-  var item = props.item;
+    var item = props.item;
 
-  return _react2.default.createElement(
-    "div",
-    { className: "row" },
-    _react2.default.createElement(
-      "div",
-      { id: "reservations" },
-      _react2.default.createElement(
+    return _react2.default.createElement(
         "div",
-        { "class": "reservation" },
+        { className: "row" },
         _react2.default.createElement(
-          "h2",
-          null,
-          item.label
-        ),
-        _react2.default.createElement("img", { style: localStyle.icon, src: item.seller.image }),
-        _react2.default.createElement(
-          "span",
-          { "class": "reservation-date" },
-          "$",
-          item.price,
-          " "
+            "div",
+            { id: "reservations" },
+            _react2.default.createElement(
+                "div",
+                { "class": "reservation" },
+                _react2.default.createElement(
+                    "div",
+                    { style: localStyle.itemImage },
+                    _react2.default.createElement("img", { style: localStyle.itemImage, src: item.image })
+                ),
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    item.name
+                ),
+                _react2.default.createElement(
+                    "span",
+                    { "class": "reservation-date" },
+                    "$",
+                    item.price,
+                    " "
+                ),
+                _react2.default.createElement("img", { style: localStyle.icon, src: item.seller.image })
+            )
         )
-      )
-    )
-  );
+    );
 };
 
 var localStyle = {
-  icon: { width: 28, borderRadius: 14, float: 'right' }
+    icon: {
+        width: 28,
+        borderRadius: 14,
+        float: 'right'
+    },
+    itemImage: {
+        width: 100 + '%',
+        padding: 3,
+        // border:'1px solid #ddd',
+        background: '#ffffa'
+    }
 };
 
 /***/ }),
@@ -1053,7 +1068,7 @@ var _constants2 = _interopRequireDefault(_constants);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var initialState = {
-	all: [{ id: '1', price: 10, label: 'Ping Pong', position: { lat: 40.7224017, lng: -73.9896719 }, seller: { username: 'lebron_james', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '2', price: 20, label: 'Dance', position: { lat: 40.7124017, lng: -73.9996719 }, seller: { username: 'eli_manning', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '3', price: 30, label: 'Rock Climbing', position: { lat: 40.7024017, lng: -73.999671996719 }, seller: { username: 'tom_brady', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }]
+	all: [{ id: '1', price: 10, name: 'Ping Pong', image: 'https://hoodrhetoric.com/wp-content/uploads/2016/08/Air-Jordan-1-Retro-High-OG-Banned-Black-White-555088-001.jpg', position: { lat: 40.7224017, lng: -73.9896719 }, seller: { username: 'lebron_james', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '2', price: 20, name: 'Dance', image: 'https://smhttp-ssl-18667.nexcesscdn.net/media/catalog/product/cache/1/image/400x400/9df78eab33525d08d6e5fb8d27136e95/s/i/sig-7970018-sofa-chise-3.jpg', position: { lat: 40.7124017, lng: -73.9996719 }, seller: { username: 'eli_manning', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '3', price: 30, name: 'Rock Climbing', image: 'https://d2uk7vc0yceq94.cloudfront.net/uploads/2017/08/25/s/0/1/12707801/PV2H-5.jpeg', position: { lat: 40.7024017, lng: -73.999671996719 }, seller: { username: 'tom_brady', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }]
 
 };
 
