@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
 
 	switch (action.type) {
         case 'ITEM_ADDED':
-          // console.log('ITEM_ADDED: '+JSON.stringify(action.data))
+          console.log('ITEM_ADDED: '+JSON.stringify(action.data))
           // let all = Object.assign([], newState.all)
           let all = (updatedState.all) ? Object.assign([], updatedState.all) : []
           all.push(action.data)

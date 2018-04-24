@@ -8,7 +8,7 @@ class Results extends Component {
     	super()
     	this.state = {
             item: {
-                position:{lat:40.70224017, lng:-73.9796719}
+                // position:{lat:40.70224017, lng:-73.9796719}
             }
     	}
     }
@@ -29,6 +29,7 @@ class Results extends Component {
         newItem['id'] = 100
         newItem['key'] = '100'
         newItem['defaultAnimation'] = 2
+        newItem['position'] = this.props.map.currentLocation
         this.props.addItem(newItem)
     }
     
