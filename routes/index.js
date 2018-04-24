@@ -14,6 +14,13 @@ router.get('/auth', function(req, res){
 	res.render('auth', null)
 })
 
+// router.post('/auth/register', function(req, res){
+// 	res.json({
+// 		confirmation: 'success',
+// 		data: query.body
+// 	})
+// })
+
 // /*  This route render json data */
 // router.get('/json', function(req, res){
 // 	res.json({
