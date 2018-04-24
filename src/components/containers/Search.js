@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import { Map } from './../presentation'
 import { connect } from 'react-redux'
+import actions from '../../actions'
 
 class Search extends Component {
 
 	constructor(){
 		super()
 		this.state = {
-			map: null
+			map: null,
+			center: null
 		}
 	}
 
 	centerChanged(center){
 		console.log('centerChanged: '+JSON.stringify(center))
+		this.props.locationChanged(center)
 	}
 
     render(){
@@ -40,6 +43,7 @@ class Search extends Component {
 				    }}
 
                     locationChanged={this.centerChanged.bind(this)}
+                    // this.props.changeLocation
                     markers={items}
 				    zoom={14}
 				    center={{lat:40.7224017, lng:-73.9896719}}
@@ -55,8 +59,15 @@ class Search extends Component {
 
 const stateToProps = (state) => {
 	return {
-		item: state.item
+		item: state.item,
+		map: state.map
 	}
 }
 
-export default connect(stateToProps)(Search)
+const dispatchToProps = (dispatch) => {
+	return {
+        locationChanged: (location) => dispatch(actions.locationChanged(location))
+	}
+}
+
+export default connect(stateToProps, dispatchToProps)(Search)

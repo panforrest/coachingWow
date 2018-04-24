@@ -135,7 +135,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([388,0]);
+/******/ 	deferredModules.push([389,0]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
@@ -370,7 +370,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(83);
+var _constants = __webpack_require__(57);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -390,6 +390,13 @@ exports.default = {
 		return {
 			type: 'ITEM_ADDED',
 			data: item
+		};
+	},
+
+	locationChanged: function locationChanged(location) {
+		return {
+			type: 'LOCATION_CHANGED',
+			data: location
 		};
 	}
 
@@ -447,7 +454,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _presentation = __webpack_require__(147);
 
-var _reactRedux = __webpack_require__(58);
+var _reactRedux = __webpack_require__(59);
 
 var _actions = __webpack_require__(171);
 
@@ -552,7 +559,8 @@ var localStyle = {
 
 var stateToProps = function stateToProps(state) {
     return {
-        item: state.item
+        item: state.item,
+        map: state.map
     };
 };
 
@@ -740,7 +748,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _presentation = __webpack_require__(147);
 
-var _reactRedux = __webpack_require__(58);
+var _reactRedux = __webpack_require__(59);
+
+var _actions = __webpack_require__(171);
+
+var _actions2 = _interopRequireDefault(_actions);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -759,7 +771,8 @@ var Search = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this));
 
 		_this.state = {
-			map: null
+			map: null,
+			center: null
 		};
 		return _this;
 	}
@@ -768,6 +781,7 @@ var Search = function (_Component) {
 		key: 'centerChanged',
 		value: function centerChanged(center) {
 			console.log('centerChanged: ' + JSON.stringify(center));
+			this.props.locationChanged(center);
 		}
 	}, {
 		key: 'render',
@@ -794,8 +808,9 @@ var Search = function (_Component) {
 						});
 					},
 
-					locationChanged: this.centerChanged.bind(this),
-					markers: items,
+					locationChanged: this.centerChanged.bind(this)
+					// this.props.changeLocation
+					, markers: items,
 					zoom: 14,
 					center: { lat: 40.7224017, lng: -73.9896719 },
 					containerElement: _react2.default.createElement('div', { style: { height: 100 + '%' } }),
@@ -809,11 +824,20 @@ var Search = function (_Component) {
 
 var stateToProps = function stateToProps(state) {
 	return {
-		item: state.item
+		item: state.item,
+		map: state.map
 	};
 };
 
-exports.default = (0, _reactRedux.connect)(stateToProps)(Search);
+var dispatchToProps = function dispatchToProps(dispatch) {
+	return {
+		locationChanged: function locationChanged(location) {
+			return dispatch(_actions2.default.locationChanged(location));
+		}
+	};
+};
+
+exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Search);
 
 /***/ }),
 
@@ -949,7 +973,60 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(83);
+var _constants = __webpack_require__(57);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {
+	currentLocation: { lat: 40.72, lng: -73.98 }
+};
+
+exports.default = function () {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	var action = arguments[1];
+
+	var updated = Object.assign({}, state);
+	switch (action.type) {
+
+		case 'LOCATION_CHANGED':
+			console.log('LOCATION_CHANGED: ' + JSON.stringify(action.data));
+			updated['currentLocation'] = action.data;
+			return updated;
+
+		// case constants.CURRENT_USER_RECEIVED:
+		// 	newState['currentUser'] = action.data
+		// 	return newState
+
+		// case constants.USERS_RECEIVED:
+		// 	newState['all'] = action.data
+		// 	return newState
+
+		// case constants.USER_CREATED:
+		// 	let array = (newState.all) ? Object.assign([], newState.all) : []
+		// 	array.unshift(action.data)
+		// 	newState['all'] = array
+		// 	return newState
+
+		default:
+			return state;
+	}
+};
+
+/***/ }),
+
+/***/ 376:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _constants = __webpack_require__(57);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -997,7 +1074,7 @@ exports.default = function () {
 
 /***/ }),
 
-/***/ 376:
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1007,7 +1084,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(83);
+var _constants = __webpack_require__(57);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -1054,7 +1131,7 @@ exports.default = function () {
 
 /***/ }),
 
-/***/ 377:
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1063,29 +1140,32 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.itemReducer = exports.userReducer = undefined;
+exports.mapReducer = exports.itemReducer = exports.userReducer = undefined;
 
-var _userReducer = __webpack_require__(376);
+var _userReducer = __webpack_require__(377);
 
 var _userReducer2 = _interopRequireDefault(_userReducer);
 
-var _itemReducer = __webpack_require__(375);
+var _itemReducer = __webpack_require__(376);
 
 var _itemReducer2 = _interopRequireDefault(_itemReducer);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _mapReducer = __webpack_require__(375);
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Export your reducers here
-* * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*/
+var _mapReducer2 = _interopRequireDefault(_mapReducer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.userReducer = _userReducer2.default;
 exports.itemReducer = _itemReducer2.default;
+exports.mapReducer = _mapReducer2.default; /* * * * * * * * * * * * * * * * * * * * * * * * * * *
+                                           	Export your reducers here
+                                           * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                                           */
 
 /***/ }),
 
-/***/ 380:
+/***/ 381:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1097,11 +1177,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(87);
 
-var _reduxThunk = __webpack_require__(378);
+var _reduxThunk = __webpack_require__(379);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-var _reducers = __webpack_require__(377);
+var _reducers = __webpack_require__(378);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1120,7 +1200,8 @@ exports.default = {
 
 		var reducers = (0, _redux.combineReducers)({ // insert reducers here
 			user: _reducers.userReducer,
-			item: _reducers.itemReducer
+			item: _reducers.itemReducer,
+			map: _reducers.mapReducer
 		});
 
 		if (initialState) {
@@ -1141,7 +1222,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ 388:
+/***/ 389:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1155,11 +1236,11 @@ var _reactDom = __webpack_require__(84);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _stores = __webpack_require__(380);
+var _stores = __webpack_require__(381);
 
 var _stores2 = _interopRequireDefault(_stores);
 
-var _reactRedux = __webpack_require__(58);
+var _reactRedux = __webpack_require__(59);
 
 var _Home = __webpack_require__(372);
 
@@ -1179,7 +1260,7 @@ _reactDom2.default.render(app, document.getElementById('root'));
 
 /***/ }),
 
-/***/ 83:
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
