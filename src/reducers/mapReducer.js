@@ -8,7 +8,7 @@ export default (state = initialState, action) => {
 	let updated = Object.assign({}, state)
 	switch (action.type) {
 
-		case 'LOCATION_CHANGED':
+		case constants.ITEM_ADDED:
 		    console.log('LOCATION_CHANGED: '+JSON.stringify(action.data))
 		    updated['currentLocation'] = action.data
 		    return updated

@@ -991,7 +991,7 @@ exports.default = function () {
 	var updated = Object.assign({}, state);
 	switch (action.type) {
 
-		case 'LOCATION_CHANGED':
+		case _constants2.default.ITEM_ADDED:
 			console.log('LOCATION_CHANGED: ' + JSON.stringify(action.data));
 			updated['currentLocation'] = action.data;
 			return updated;
@@ -1045,7 +1045,7 @@ exports.default = function () {
 	var updatedState = Object.assign({}, state);
 
 	switch (action.type) {
-		case 'ITEM_ADDED':
+		case _constants2.default.ITEM_ADDED:
 			console.log('ITEM_ADDED: ' + JSON.stringify(action.data));
 			// let all = Object.assign([], newState.all)
 			var all = updatedState.all ? Object.assign([], updatedState.all) : [];
@@ -1279,10 +1279,15 @@ Object.defineProperty(exports, "__esModule", {
 
 exports.default = {
 
-	USERS_RECEIVED: 'USERS_RECEIVED',
-	USER_CREATED: 'USER_CREATED',
-	USER_LOGGED_IN: 'USER_LOGGED_IN',
-	CURRENT_USER_RECEIVED: 'CURRENT_USER_RECEIVED'
+	ITEM_ADDED: 'ITEM_ADDED',
+	LOCATION_CHANGED: 'LOCATION_CHANGED'
+	// USER_LOGGED_IN: 		'USER_LOGGED_IN',
+	// CURRENT_USER_RECEIVED: 	'CURRENT_USER_RECEIVED'
+
+	// USERS_RECEIVED: 		'USERS_RECEIVED',
+	// USER_CREATED: 			'USER_CREATED',
+	// USER_LOGGED_IN: 		'USER_LOGGED_IN',
+	// CURRENT_USER_RECEIVED: 	'CURRENT_USER_RECEIVED'
 
 };
 

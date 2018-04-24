@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
 	let updatedState = Object.assign({}, state)
 
 	switch (action.type) {
-        case 'ITEM_ADDED':
+        case constants.ITEM_ADDED:
           console.log('ITEM_ADDED: '+JSON.stringify(action.data))
           // let all = Object.assign([], newState.all)
           let all = (updatedState.all) ? Object.assign([], updatedState.all) : []
