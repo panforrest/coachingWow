@@ -37,10 +37,23 @@ router.get('/currentuser', function(req, res){
 		return	
 	}
 
-	res.json({
-		confirmation: 'success',
-		user: req.vertexSession.user   //user: req.vertexSession.id 
-	})
+	// res.json({
+	// 	confirmation: 'success',
+	// 	user: req.vertexSession.user   //user: req.vertexSession.id 
+	// })
+    turbo.fetchOne('user', req.vertexSession.user.id)
+    .then(data => {
+    	res.json({
+    		confirmation: 'success',
+    		user: data
+      	})
+    })
+    .catch(err => {
+    	res.json({
+    		confirmation: 'fail',
+    		message: err.message 
+    	})
+    })
 })
 
 module.exports = router
