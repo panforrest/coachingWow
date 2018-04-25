@@ -6,6 +6,7 @@ router.post('/register', function(req, res){
 	var params = req.body
     turbo.createUser(params)
 	.then(data => {
+		req.vertexSession.user = {id: data.id} // set session with user ID
 	    res.json({
 	    	confirmation: 'success',
 	    	data: data
@@ -17,11 +18,29 @@ router.post('/register', function(req, res){
             message: err.message
 	    })
 	})    
+})
 
-	// res.json({
-	// 	confirmation: 'success',
-	// 	data: req.body  //data: query.body
-	// })
+router.get('/currentuser', function(req, res){
+	if (req.vertexSession == null){
+		res.json({
+			confirmation: 'success',
+			user: null	
+		})
+		return		
+	}
+
+	if (req.vertexSession.user == null){
+		res.json({
+			confirmation: 'success',
+			user: null	
+		})	
+		return	
+	}
+
+	res.json({
+		confirmation: 'success',
+		user: req.vertexSession.user   //user: req.vertexSession.id 
+	})
 })
 
 module.exports = router

@@ -142,7 +142,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 147:
+/***/ 148:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -171,14 +171,157 @@ exports.Map = _Map2.default;
 
 /***/ }),
 
-/***/ 151:
+/***/ 152:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _presentation = __webpack_require__(148);
+
+var _reactRedux = __webpack_require__(59);
+
+var _actions = __webpack_require__(93);
+
+var _actions2 = _interopRequireDefault(_actions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Results = function (_Component) {
+    _inherits(Results, _Component);
+
+    function Results() {
+        _classCallCheck(this, Results);
+
+        var _this = _possibleConstructorReturn(this, (Results.__proto__ || Object.getPrototypeOf(Results)).call(this));
+
+        _this.state = {
+            item: {
+                // position:{lat:40.70224017, lng:-73.9796719}
+            }
+        };
+        return _this;
+    }
+
+    _createClass(Results, [{
+        key: 'updateItem',
+        value: function updateItem(attr, event) {
+            event.preventDefault();
+            console.log(attr + ' == ' + event.target.value);
+            var updated = Object.assign({}, this.state.item);
+            updated[attr] = event.target.value;
+            this.setState({
+                item: updated
+            });
+        }
+    }, {
+        key: 'addItem',
+        value: function addItem() {
+            // console.log('ADD ITEM: ' + JSON.stringify(this.state.item))
+            var newItem = Object.assign({}, this.state.item);
+            var len = this.props.item.all.length + 1;
+            newItem['id'] = len.toString();
+            // newItem['id'] = 100
+            // newItem['key'] = '100'
+            // newItem['defaultAnimation'] = 2
+            newItem['position'] = this.props.map.currentLocation;
+            this.props.addItem(newItem);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            // const items = [
+            //     {id:1, key:'1', price:'10', defaultAnimation:2, label:'Nike Jordans', position:{lat:40.7224017, lng:-73.9896719}},
+            //     {id:2, key:'2', price:'20', defaultAnimation:2, label:'Sofa', position:{lat:40.7124017, lng:-73.9896719}},
+            //     {id:2, key:'2', price:'20', defaultAnimation:2, label:'Sofa', position:{lat:40.7124017, lng:-73.9896719}}
+            // ]
+
+            var items = this.props.item.all || [];
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'container-fluid' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    items.map(function (item, i) {
+                        return _react2.default.createElement(_presentation.Item, { key: item.id, item: item });
+                    })
+                ),
+                _react2.default.createElement('hr', null),
+                _react2.default.createElement('input', { onChange: this.updateItem.bind(this, 'label'), className: 'formControl', type: 'text', placeholder: 'Item' }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { onChange: this.updateItem.bind(this, 'price'), className: 'formControl', type: 'text', placeholder: 'Price' }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.addItem.bind(this), className: 'btn btn-success' },
+                        'Add Item'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Results;
+}(_react.Component);
+
+var localStyle = {
+    input: {
+        border: '1px solid #ddd',
+        marginBottom: 12
+    }
+};
+
+var stateToProps = function stateToProps(state) {
+    return {
+        item: state.item,
+        map: state.map
+    };
+};
+
+var dispatchToProps = function dispatchToProps(dispatch) {
+    return {
+        addItem: function addItem(item) {
+            return dispatch(_actions2.default.addItem(item));
+        }
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Results);
+
+/***/ }),
+
+/***/ 153:
 /***/ (function(module) {
 
 module.exports = {"name":"coachingWow","version":"0.0.0","server":false,"private":true,"scripts":{"dev":"webpack --mode development -w","build":"npm run clean && NODE_ENV=production webpack -p && gulp prod","clean":"rm -rf ./public/dist","postinstall":"npm run build"},"dependencies":{"bluebird":"latest","debug":"latest","dotenv":"latest","moment":"latest","react":"latest","react-bootstrap":"latest","react-dom":"latest","react-dropzone":"latest","react-google-maps":"^9.4.5","react-redux":"latest","react-time":"latest","redux":"latest","redux-thunk":"latest","superagent":"latest","turbo360":"latest","vertex360":"latest"},"devDependencies":{"babel-core":"latest","babel-loader":"latest","babel-preset-es2015":"latest","babel-preset-react":"latest","chai":"latest","chai-http":"latest","gulp":"latest","gulp-6to5":"latest","gulp-autoprefixer":"latest","gulp-concat":"latest","gulp-less":"latest","gulp-minify-css":"latest","gulp-rename":"latest","gulp-sass":"^3.1.0","gulp-uglify":"latest","json-loader":"latest","mocha":"latest","mocha-jscs":"latest","mocha-jshint":"latest","nodemon":"latest","rimraf":"latest","webpack":"latest","webpack-cli":"^2.0.15"},"deploy":["."],"format":"vertex","app":""};
 
 /***/ }),
 
-/***/ 169:
+/***/ 171:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -188,11 +331,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _turbo = __webpack_require__(168);
+var _turbo = __webpack_require__(170);
 
 var _turbo2 = _interopRequireDefault(_turbo);
 
-var _package = __webpack_require__(151);
+var _package = __webpack_require__(153);
 
 var _package2 = _interopRequireDefault(_package);
 
@@ -339,7 +482,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ 170:
+/***/ 172:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -350,232 +493,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TurboClient = undefined;
 
-var _TurboClient = __webpack_require__(169);
+var _TurboClient = __webpack_require__(171);
 
 var _TurboClient2 = _interopRequireDefault(_TurboClient);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.TurboClient = _TurboClient2.default;
-
-/***/ }),
-
-/***/ 171:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _constants = __webpack_require__(57);
-
-var _constants2 = _interopRequireDefault(_constants);
-
-var _utils = __webpack_require__(170);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * *
-	Here are a few sample actions for User managment.
-	Feel free to remove and replace with your own actions
-* * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*/
-
-exports.default = {
-
-	addItem: function addItem(item) {
-		return {
-			type: 'ITEM_ADDED',
-			data: item
-		};
-	},
-
-	locationChanged: function locationChanged(location) {
-		return {
-			type: 'LOCATION_CHANGED',
-			data: location
-		};
-	}
-
-	// fetchUsers: (params) => {
-	// 	return dispatch => {
-	// 		return dispatch(TurboClient.getRequest('user', params, constants.USERS_RECEIVED))
-	// 	}
-	// },
-
-	// addUser: (params) => {
-	// 	return dispatch => {
-	// 		return dispatch(TurboClient.postRequest('user', params, constants.USER_CREATED))
-	// 	}
-	// },
-
-	// // Unlike addUser, register() also maintains a session for login state. After calling 
-	// // TurboClient.createUser(), the new user is logged in as well:
-	// register: (params) => {
-	// 	return dispatch => {
-	// 		return dispatch(TurboClient.createUser(params, constants.USER_CREATED))
-	// 	}
-	// },
-
-	// loginUser: (credentials) => {
-	// 	return dispatch => {
-	// 		return dispatch(TurboClient.login(credentials, constants.CURRENT_USER_RECEIVED))
-	// 	}
-	// },
-
-	// currentUser: () => {
-	// 	return dispatch => {
-	// 		return dispatch(TurboClient.currentUser(constants.CURRENT_USER_RECEIVED))
-	// 	}
-	// }
-
-};
-
-/***/ }),
-
-/***/ 172:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _presentation = __webpack_require__(147);
-
-var _reactRedux = __webpack_require__(59);
-
-var _actions = __webpack_require__(171);
-
-var _actions2 = _interopRequireDefault(_actions);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Results = function (_Component) {
-    _inherits(Results, _Component);
-
-    function Results() {
-        _classCallCheck(this, Results);
-
-        var _this = _possibleConstructorReturn(this, (Results.__proto__ || Object.getPrototypeOf(Results)).call(this));
-
-        _this.state = {
-            item: {
-                // position:{lat:40.70224017, lng:-73.9796719}
-            }
-        };
-        return _this;
-    }
-
-    _createClass(Results, [{
-        key: 'updateItem',
-        value: function updateItem(attr, event) {
-            event.preventDefault();
-            console.log(attr + ' == ' + event.target.value);
-            var updated = Object.assign({}, this.state.item);
-            updated[attr] = event.target.value;
-            this.setState({
-                item: updated
-            });
-        }
-    }, {
-        key: 'addItem',
-        value: function addItem() {
-            // console.log('ADD ITEM: ' + JSON.stringify(this.state.item))
-            var newItem = Object.assign({}, this.state.item);
-            var len = this.props.item.all.length + 1;
-            newItem['id'] = len.toString();
-            // newItem['id'] = 100
-            // newItem['key'] = '100'
-            // newItem['defaultAnimation'] = 2
-            newItem['position'] = this.props.map.currentLocation;
-            this.props.addItem(newItem);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-
-            // const items = [
-            //     {id:1, key:'1', price:'10', defaultAnimation:2, label:'Nike Jordans', position:{lat:40.7224017, lng:-73.9896719}},
-            //     {id:2, key:'2', price:'20', defaultAnimation:2, label:'Sofa', position:{lat:40.7124017, lng:-73.9896719}},
-            //     {id:2, key:'2', price:'20', defaultAnimation:2, label:'Sofa', position:{lat:40.7124017, lng:-73.9896719}}
-            // ]
-
-            var items = this.props.item.all || [];
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'container-fluid' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
-                    items.map(function (item, i) {
-                        return _react2.default.createElement(_presentation.Item, { key: item.id, item: item });
-                    })
-                ),
-                _react2.default.createElement('hr', null),
-                _react2.default.createElement('input', { onChange: this.updateItem.bind(this, 'label'), className: 'formControl', type: 'text', placeholder: 'Item' }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { onChange: this.updateItem.bind(this, 'price'), className: 'formControl', type: 'text', placeholder: 'Price' }),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: this.addItem.bind(this), className: 'btn btn-success' },
-                        'Add Item'
-                    )
-                )
-            );
-        }
-    }]);
-
-    return Results;
-}(_react.Component);
-
-var localStyle = {
-    input: {
-        border: '1px solid #ddd',
-        marginBottom: 12
-    }
-};
-
-var stateToProps = function stateToProps(state) {
-    return {
-        item: state.item,
-        map: state.map
-    };
-};
-
-var dispatchToProps = function dispatchToProps(dispatch) {
-    return {
-        addItem: function addItem(item) {
-            return dispatch(_actions2.default.addItem(item));
-        }
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Results);
 
 /***/ }),
 
@@ -769,11 +693,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _presentation = __webpack_require__(147);
+var _presentation = __webpack_require__(148);
 
 var _reactRedux = __webpack_require__(59);
 
-var _actions = __webpack_require__(171);
+var _actions = __webpack_require__(93);
 
 var _actions2 = _interopRequireDefault(_actions);
 
@@ -891,7 +815,7 @@ var _Search = __webpack_require__(370);
 
 var _Search2 = _interopRequireDefault(_Search);
 
-var _Results = __webpack_require__(172);
+var _Results = __webpack_require__(152);
 
 var _Results2 = _interopRequireDefault(_Results);
 
@@ -1322,6 +1246,82 @@ exports.default = {
 	// USER_CREATED: 			'USER_CREATED',
 	// USER_LOGGED_IN: 		'USER_LOGGED_IN',
 	// CURRENT_USER_RECEIVED: 	'CURRENT_USER_RECEIVED'
+
+};
+
+/***/ }),
+
+/***/ 93:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _constants = __webpack_require__(57);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _utils = __webpack_require__(172);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+	Here are a few sample actions for User managment.
+	Feel free to remove and replace with your own actions
+* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
+
+exports.default = {
+
+	addItem: function addItem(item) {
+		return {
+			type: 'ITEM_ADDED',
+			data: item
+		};
+	},
+
+	locationChanged: function locationChanged(location) {
+		return {
+			type: 'LOCATION_CHANGED',
+			data: location
+		};
+	}
+
+	// fetchUsers: (params) => {
+	// 	return dispatch => {
+	// 		return dispatch(TurboClient.getRequest('user', params, constants.USERS_RECEIVED))
+	// 	}
+	// },
+
+	// addUser: (params) => {
+	// 	return dispatch => {
+	// 		return dispatch(TurboClient.postRequest('user', params, constants.USER_CREATED))
+	// 	}
+	// },
+
+	// // Unlike addUser, register() also maintains a session for login state. After calling 
+	// // TurboClient.createUser(), the new user is logged in as well:
+	// register: (params) => {
+	// 	return dispatch => {
+	// 		return dispatch(TurboClient.createUser(params, constants.USER_CREATED))
+	// 	}
+	// },
+
+	// loginUser: (credentials) => {
+	// 	return dispatch => {
+	// 		return dispatch(TurboClient.login(credentials, constants.CURRENT_USER_RECEIVED))
+	// 	}
+	// },
+
+	// currentUser: () => {
+	// 	return dispatch => {
+	// 		return dispatch(TurboClient.currentUser(constants.CURRENT_USER_RECEIVED))
+	// 	}
+	// }
 
 };
 
