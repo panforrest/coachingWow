@@ -7,14 +7,15 @@ router.post('/register', function(req, res){
     turbo.createUser(params)
 	.then(data => {
 		req.vertexSession.user = {id: data.id} // set session with user ID
-	    res.json({
-	    	confirmation: 'success',
-	    	data: data
-	    })
+	    // res.json({
+	    // 	confirmation: 'success',
+	    // 	data: data
+	    // })
+	    res.redirect('/')//REDIRECT TO THE MAP AFER CREATE NEW USER
 	})
 	.catch(err => {
 	    res.json({
-            confirmation: 'success',
+            confirmation: 'fail',
             message: err.message
 	    })
 	})    
