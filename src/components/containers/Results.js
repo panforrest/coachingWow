@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Item } from '../presentation'
 import { connect } from 'react-redux'
 import actions from '../../actions'
+import Dropzone from 'react-dropzone'
 
 class Results extends Component {
     constructor(){
@@ -34,6 +35,11 @@ class Results extends Component {
         newItem['position'] = this.props.map.currentLocation
         this.props.addItem(newItem)
     }
+
+    uploadImage(files){
+        const image = files[0]
+        console.log('uploadImage: ' + image.name)
+    }
     
     render(){
 
@@ -61,6 +67,7 @@ class Results extends Component {
                 <input onChange={this.updateItem.bind(this, 'price')} className="formControl" type="text" placeholder="Price" /><br /><br />    
                 
                 <div>
+                    <Dropzone onDrop={this.uploadImage.bind(this)} className="btn btn-info btn-fill" style={{marginRight:16}}>Add Image</Dropzone>
                     <button onClick={this.addItem.bind(this)} className="btn btn-success">Add Item</button>	
                 </div>	                
             </div>
@@ -81,7 +88,7 @@ const stateToProps = (state) => {
     return {
         item: state.item,
         map: state.map,
-        account: state.account
+        // account: state.account
     }
 }
 
