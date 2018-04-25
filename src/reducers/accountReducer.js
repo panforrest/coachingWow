@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
 
 		case constants.CURRENT_USER_RECEIVED:
 		    console.log('CURRENT_USER_RECEIVED: '+JSON.stringify(action.data))
-			// newState['currentUser'] = action.data
+			updated['currentUser'] = action.data.user
 			return updated
 
 		// case constants.USERS_RECEIVED:
