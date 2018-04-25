@@ -298,7 +298,8 @@ var localStyle = {
 var stateToProps = function stateToProps(state) {
     return {
         item: state.item,
-        map: state.map
+        map: state.map,
+        account: state.account
     };
 };
 
@@ -491,15 +492,20 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.TurboClient = undefined;
+exports.HTTPAsync = exports.TurboClient = undefined;
 
 var _TurboClient = __webpack_require__(171);
 
 var _TurboClient2 = _interopRequireDefault(_TurboClient);
 
+var _HTTPAsync = __webpack_require__(392);
+
+var _HTTPAsync2 = _interopRequireDefault(_HTTPAsync);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.TurboClient = _TurboClient2.default;
+exports.HTTPAsync = _HTTPAsync2.default;
 
 /***/ }),
 
@@ -725,6 +731,11 @@ var Search = function (_Component) {
 	}
 
 	_createClass(Search, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.props.currentUser(); //MISSING () CAN CAUSE THE accountReducer NOT CONSOLE LOG
+		}
+	}, {
 		key: 'centerChanged',
 		value: function centerChanged(center) {
 			console.log('centerChanged: ' + JSON.stringify(center));
@@ -792,6 +803,9 @@ var dispatchToProps = function dispatchToProps(dispatch) {
 	return {
 		locationChanged: function locationChanged(location) {
 			return dispatch(_actions2.default.locationChanged(location));
+		},
+		currentUser: function currentUser() {
+			return dispatch(_actions2.default.currentUser());
 		}
 	};
 };
@@ -1099,7 +1113,7 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.mapReducer = exports.itemReducer = exports.userReducer = undefined;
+exports.accountReducer = exports.mapReducer = exports.itemReducer = exports.userReducer = undefined;
 
 var _userReducer = __webpack_require__(377);
 
@@ -1113,14 +1127,21 @@ var _mapReducer = __webpack_require__(375);
 
 var _mapReducer2 = _interopRequireDefault(_mapReducer);
 
+var _accountReducer = __webpack_require__(391);
+
+var _accountReducer2 = _interopRequireDefault(_accountReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+	Export your reducers here
+* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
 
 exports.userReducer = _userReducer2.default;
 exports.itemReducer = _itemReducer2.default;
-exports.mapReducer = _mapReducer2.default; /* * * * * * * * * * * * * * * * * * * * * * * * * * *
-                                           	Export your reducers here
-                                           * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-                                           */
+exports.mapReducer = _mapReducer2.default;
+exports.accountReducer = _accountReducer2.default;
 
 /***/ }),
 
@@ -1160,7 +1181,8 @@ exports.default = {
 		var reducers = (0, _redux.combineReducers)({ // insert reducers here
 			user: _reducers.userReducer,
 			item: _reducers.itemReducer,
-			map: _reducers.mapReducer
+			map: _reducers.mapReducer,
+			account: _reducers.accountReducer
 		});
 
 		if (initialState) {
@@ -1219,6 +1241,147 @@ _reactDom2.default.render(app, document.getElementById('root'));
 
 /***/ }),
 
+/***/ 391:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _constants = __webpack_require__(57);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {
+	// all: null,
+	currentUser: null // signed in user
+};
+
+exports.default = function () {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	var action = arguments[1];
+
+	var updated = Object.assign({}, state);
+
+	switch (action.type) {
+
+		case _constants2.default.CURRENT_USER_RECEIVED:
+			console.log('CURRENT_USER_RECEIVED: ' + JSON.stringify(action.data));
+			// newState['currentUser'] = action.data
+			return updated;
+
+		// case constants.USERS_RECEIVED:
+		// 	newState['all'] = action.data
+		// 	return newState
+
+		// case constants.USER_CREATED:
+		// 	let array = (newState.all) ? Object.assign([], newState.all) : []
+		// 	array.unshift(action.data)
+		// 	newState['all'] = array
+		// 	return newState
+
+		default:
+			return state;
+	}
+};
+
+/***/ }),
+
+/***/ 392:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _superagent = __webpack_require__(12);
+
+var _superagent2 = _interopRequireDefault(_superagent);
+
+var _bluebird = __webpack_require__(11);
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// standard superagent get request:
+var getRequst = function getRequst(url, params) {
+	return new _bluebird2.default(function (resolve, reject) {
+		_superagent2.default.get(url).query(params).set('Accept', 'application/json').end(function (err, response) {
+			if (err) {
+				reject(err);
+				return;
+			}
+
+			var payload = response.body || response.text;
+			resolve(payload);
+		});
+	});
+};
+
+var postRequst = function postRequst(url, body) {
+	return new _bluebird2.default(function (resolve, reject) {
+		_superagent2.default.post(url).send(body).set('Accept', 'application/json').end(function (err, response) {
+			if (err) {
+				reject(err);
+				return;
+			}
+
+			var payload = response.body || response.text;
+			resolve(payload);
+		});
+	});
+};
+
+exports.default = {
+	post: function post(url, body, actionType) {
+		return function (dispatch) {
+			return postRequst(url, body).then(function (data) {
+				// console.log('DATA: ' + JSON.stringify(data))
+				if (actionType != null) {
+					dispatch({
+						type: actionType,
+						data: data
+					});
+				}
+
+				return data;
+			}).catch(function (err) {
+				throw err;
+			});
+		};
+	},
+
+	get: function get(url, params, actionType) {
+		return function (dispatch) {
+			return getRequst(url, params).then(function (data) {
+				// console.log('DATA: ' + JSON.stringify(data))
+				if (actionType != null) {
+					dispatch({
+						type: actionType,
+						data: data
+					});
+				}
+
+				return data;
+			}).catch(function (err) {
+				throw err;
+			});
+		};
+	}
+
+};
+
+/***/ }),
+
 /***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1238,14 +1401,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
 
 	ITEM_ADDED: 'ITEM_ADDED',
-	LOCATION_CHANGED: 'LOCATION_CHANGED'
+	LOCATION_CHANGED: 'LOCATION_CHANGED',
+	CURRENT_USER_RECEIVED: 'CURRENT_USER_RECEIVED'
 	// USER_LOGGED_IN: 		'USER_LOGGED_IN',
 	// CURRENT_USER_RECEIVED: 	'CURRENT_USER_RECEIVED'
 
 	// USERS_RECEIVED: 		'USERS_RECEIVED',
 	// USER_CREATED: 			'USER_CREATED',
 	// USER_LOGGED_IN: 		'USER_LOGGED_IN',
-	// CURRENT_USER_RECEIVED: 	'CURRENT_USER_RECEIVED'
+
 
 };
 
@@ -1288,6 +1452,20 @@ exports.default = {
 		return {
 			type: 'LOCATION_CHANGED',
 			data: location
+		};
+	},
+
+	//    currentuserReceived: (user) => {
+	// 	return {
+	// 		type: 'CURRENT_USER_RECEIVED',
+	// 		data: location
+	// 	}
+	// }
+
+	currentUser: function currentUser() {
+		console.log('GET CURRENT USER');
+		return function (dispatch) {
+			return dispatch(_utils.HTTPAsync.get('/auth/currentuser', null, _constants2.default.CURRENT_USER_RECEIVED));
 		};
 	}
 
