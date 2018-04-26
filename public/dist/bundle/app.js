@@ -357,6 +357,11 @@ var Results = function (_Component) {
             };
 
             console.log('ADD ITEM: ' + JSON.stringify(updated));
+            this.props.addItem(updated).then(function (data) {
+                console.log('ITEM ADDED: ' + JSON.stringify(data));
+            }).catch(function (err) {
+                console.log('ERR: ' + err.message);
+            });
         }
     }, {
         key: 'uploadImage',
@@ -370,6 +375,8 @@ var Results = function (_Component) {
             });
 
             turboClient.uploadFile(image).then(function (data) {
+                // console.log('FILE UPLOADED: ' + JSON.stringify(data))
+                // console.log('FILE UPLOADED: ' + data.result.url)
                 var updated = Object.assign({}, _this2.state.item);
                 updated['image'] = data.result.url;
                 _this2.setState({
@@ -1323,8 +1330,12 @@ var _constants2 = _interopRequireDefault(_constants);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var initialState = {
-	all: [{ id: '1', price: 10, name: 'Ping Pong', image: 'https://hoodrhetoric.com/wp-content/uploads/2016/08/Air-Jordan-1-Retro-High-OG-Banned-Black-White-555088-001.jpg', position: { lat: 40.7224017, lng: -73.9896719 }, seller: { username: 'lebron_james', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '2', price: 20, name: 'Dance', image: 'https://smhttp-ssl-18667.nexcesscdn.net/media/catalog/product/cache/1/image/400x400/9df78eab33525d08d6e5fb8d27136e95/s/i/sig-7970018-sofa-chise-3.jpg', position: { lat: 40.7124017, lng: -73.9996719 }, seller: { username: 'eli_manning', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }, { id: '3', price: 30, name: 'Rock Climbing', image: 'https://d2uk7vc0yceq94.cloudfront.net/uploads/2017/08/25/s/0/1/12707801/PV2H-5.jpeg', position: { lat: 40.7024017, lng: -73.999671996719 }, seller: { username: 'tom_brady', image: 'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png' } }]
-
+	// all: [
+	//         {id:'1', price:10, name:'Ping Pong', image: 'https://hoodrhetoric.com/wp-content/uploads/2016/08/Air-Jordan-1-Retro-High-OG-Banned-Black-White-555088-001.jpg', position:{lat:40.7224017, lng:-73.9896719}, seller:{username:'lebron_james',image:'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png'}},
+	//         {id:'2', price:20, name:'Dance', image: 'https://smhttp-ssl-18667.nexcesscdn.net/media/catalog/product/cache/1/image/400x400/9df78eab33525d08d6e5fb8d27136e95/s/i/sig-7970018-sofa-chise-3.jpg', position:{lat:40.7124017, lng:-73.9996719}, seller:{username:'eli_manning',image:'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png'}},
+	//         {id:'3', price:30, name:'Rock Climbing', image: 'https://d2uk7vc0yceq94.cloudfront.net/uploads/2017/08/25/s/0/1/12707801/PV2H-5.jpeg', position:{lat:40.7024017, lng:-73.999671996719}, seller:{username:'tom_brady',image:'http://cdn.hoopshype.com/i/de/74/ac/lebron-james.png'}}
+	//        ]
+	all: null
 };
 
 exports.default = function () {
@@ -1335,10 +1346,11 @@ exports.default = function () {
 
 	switch (action.type) {
 		case _constants2.default.ITEM_ADDED:
-			console.log('ITEM_ADDED: ' + JSON.stringify(action.data));
+			var payload = action.data;
+			console.log('ITEM_ADDED: ' + JSON.stringify(payload.data));
 			// let all = Object.assign([], newState.all)
 			var all = updatedState.all ? Object.assign([], updatedState.all) : [];
-			all.push(action.data);
+			all.push(payload.data);
 			updatedState['all'] = all;
 			return updatedState;
 
@@ -1358,7 +1370,7 @@ exports.default = function () {
 
 
 		default:
-			return state;
+			return updated;
 	}
 };
 
@@ -1585,15 +1597,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
 
 	addItem: function addItem(item) {
-		return {
-			type: 'ITEM_ADDED',
-			data: item
+		// return {
+		// 	type: 'ITEM_ADDED',
+		// 	data: item
+		// }
+		return function (dispatch) {
+			return dispatch(_utils.HTTPAsync.post('/api/item', item, _constants2.default.ITEM_ADDED));
 		};
 	},
 
 	locationChanged: function locationChanged(location) {
 		return {
-			type: 'LOCATION_CHANGED',
+			type: _constants2.default.LOCATION_CHANGED,
 			data: location
 		};
 	},

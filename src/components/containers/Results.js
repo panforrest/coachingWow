@@ -49,6 +49,13 @@ class Results extends Component {
         }
 
         console.log('ADD ITEM: ' + JSON.stringify(updated))
+        this.props.addItem(updated)
+        .then(data => {
+            console.log('ITEM ADDED: ' + JSON.stringify(data))
+        })
+        .catch(err => {
+            console.log('ERR: ' + err.message)
+        })
     }
 
     uploadImage(files){
@@ -60,6 +67,8 @@ class Results extends Component {
 
         turboClient.uploadFile(image)
         .then(data => {
+            // console.log('FILE UPLOADED: ' + JSON.stringify(data))
+            // console.log('FILE UPLOADED: ' + data.result.url)
             let updated = Object.assign({}, this.state.item)
             updated['image'] = data.result.url
             this.setState({
