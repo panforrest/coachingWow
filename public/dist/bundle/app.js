@@ -184,6 +184,12 @@ exports.default = {
 		};
 	},
 
+	submitOrder: function submitOrder(order) {
+		return function (dispatch) {
+			return dispatch(_utils.HTTPAsync.post('/api/order', order, null));
+		};
+	},
+
 	locationChanged: function locationChanged(location) {
 		return {
 			type: _constants2.default.LOCATION_CHANGED,
@@ -417,7 +423,8 @@ var Results = function (_Component) {
             showModal: false,
             item: {
                 // position:{lat:40.70224017, lng:-73.9796719}
-            }
+            },
+            order: {}
         };
         return _this;
     }
@@ -500,14 +507,49 @@ var Results = function (_Component) {
         value: function onPurchase(item, event) {
             event.preventDefault();
             this.setState({
-                showModal: true
+                showModal: true,
+                selectedItem: item
             });
             console.log('onPurchase: ' + JSON.stringify(item));
         }
     }, {
+        key: 'updateOrder',
+        value: function updateOrder(event) {
+            console.log('updateOrder: ' + event.target.value);
+            var updated = Object.assign({}, this.state.order);
+            updated['message'] = event.target.value;
+            this.setState({
+                order: updated
+            });
+        }
+    }, {
+        key: 'submitOrder',
+        value: function submitOrder() {
+            var _this3 = this;
+
+            var updated = Object.assign({}, this.state.order);
+            updated['item'] = this.state.selectedItem;
+            updated['buyer'] = {
+                id: this.props.account.currentUser.id,
+                username: this.props.account.currentUser.username,
+                email: this.props.account.currentUser.email
+            };
+
+            console.log('submitOrder: ' + JSON.stringify(updated));
+
+            this.props.submitOrder(updated).then(function (data) {
+                alert('Your order has been submitted');
+                _this3.setState({
+                    showModal: false
+                });
+            }).catch(function (err) {
+                alert('OOPS: ' + err.message);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             // const items = [
             //     {id:1, key:'1', price:'10', defaultAnimation:2, label:'Nike Jordans', position:{lat:40.7224017, lng:-73.9896719}},
@@ -524,7 +566,7 @@ var Results = function (_Component) {
                     'div',
                     { className: 'row' },
                     items.map(function (item, i) {
-                        return _react2.default.createElement(_presentation.Item, { key: item.id, onPurchase: _this3.onPurchase.bind(_this3, item), item: item });
+                        return _react2.default.createElement(_presentation.Item, { key: item.id, onPurchase: _this4.onPurchase.bind(_this4, item), item: item });
                     })
                 ),
                 _react2.default.createElement('hr', null),
@@ -553,7 +595,7 @@ var Results = function (_Component) {
                 _react2.default.createElement(
                     _reactBootstrap.Modal,
                     { bsSize: 'sm', show: this.state.showModal, onHide: function onHide() {
-                            _this3.setState(showModal);
+                            _this4.setState({ showModal: false });
                         } },
                     _react2.default.createElement(
                         _reactBootstrap.Modal.Body,
@@ -563,11 +605,11 @@ var Results = function (_Component) {
                             null,
                             'Purchase Item'
                         ),
-                        _react2.default.createElement('textarea', { placeholder: 'Enter Message here', className: 'form-control' }),
+                        _react2.default.createElement('textarea', { onChange: this.updateOrder.bind(this), style: localStyle.textarea, placeholder: 'Enter Message here', className: 'form-control' }),
                         _react2.default.createElement('br', null),
                         _react2.default.createElement(
                             'button',
-                            { className: 'btn btn-success btn-fill' },
+                            { onClick: this.submitOrder.bind(this), className: 'btn btn-success btn-fill' },
                             'Purchase!'
                         )
                     )
@@ -583,6 +625,11 @@ var localStyle = {
     input: {
         border: '1px solid #ddd',
         marginBottom: 12
+    },
+    textarea: {
+        border: '1px solid #ddd',
+        height: 160,
+        marginBottom: 16
     }
 };
 
@@ -601,6 +648,9 @@ var dispatchToProps = function dispatchToProps(dispatch) {
         },
         fetchItems: function fetchItems(params) {
             return dispatch(_actions2.default.fetchItems(params));
+        },
+        submitOrder: function submitOrder(order) {
+            return dispatch(_actions2.default.submitOrder(order));
         }
     };
 };
