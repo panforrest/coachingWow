@@ -4,15 +4,22 @@ import { connect } from 'react-redux'
 import actions from '../../actions'
 import Dropzone from 'react-dropzone'
 import turbo from 'turbo360'
+import { Modal } from 'react-bootstrap'
 
 class Results extends Component {
     constructor(){
     	super()
     	this.state = {
+            showModal: false,
             item: {
                 // position:{lat:40.70224017, lng:-73.9796719}
             }
     	}
+    }
+
+    componentDidMount(){
+        console.log('componentDidMount: ')
+        this.props.fetchItems()
     }
 
     updateItem(attr, event){
@@ -41,7 +48,8 @@ class Results extends Component {
         }
 
         const currentUser = this.props.account.currentUser
-        let updated = Object.assign({}, this.state.itme)
+        let updated = Object.assign({}, this.state.item)
+        updated['position'] = this.props.map.currentLocation
         updated['seller'] = {
             id: currentUser.id,
             username: currentUser.username,
@@ -79,6 +87,14 @@ class Results extends Component {
             console.log('UPLOAD ERROR: ' + err.message)
         })
     }
+
+    onPurchase(item, event){
+        event.preventDefault()
+        this.setState({
+            showModal:true
+        })
+        console.log('onPurchase: ' + JSON.stringify(itme))
+    }
     
     render(){
 
@@ -95,7 +111,7 @@ class Results extends Component {
                 <div className="row">
 
                     { items.map((item, i) => {
-                    	return <Item key={item.id} item={item} />
+                    	return <Item key={item.id} onPurchase={this.onPurchase.bind(this, item)} item={item} />
                       })
 
                     }
@@ -112,7 +128,12 @@ class Results extends Component {
                 <div>
                     <Dropzone onDrop={this.uploadImage.bind(this)} className="btn btn-info btn-fill" style={{marginRight:16}}>Add Image</Dropzone>
                     <button onClick={this.addItem.bind(this)} className="btn btn-success">Add Item</button>	
-                </div>	                
+                </div>
+                <Modal bsSize="sm" show={this.state.showModal} onHide={ () => {this.setState(showModal:false)}}>
+                    <Modal.Body style={localStyle.modal}>
+                        <h2>This is a modal</h2>
+                    </Modal.Body>
+                </Modal>	                
             </div>
 
 
@@ -137,7 +158,8 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        addItem: (item) => dispatch(actions.addItem(item))
+        addItem: (item) => dispatch(actions.addItem(item)),
+        fetchItems: (params) => dispatch(actions.fetchItems(params))
     }
 }
 

@@ -21,6 +21,24 @@ router.post('/:resource', function(req, res){
 	})
 })
 
+router.get('/:resource', function(req, res){
+	const resource = req.params.resource
+
+	turbo.fetch(resource, null)
+	.then(data => {
+		res.json({
+			confirmation: 'success',
+			data: data
+		})
+	})
+	.catch(data => {
+		res.json({
+			confirmation: 'fail',
+			message: err.message
+		})
+	})
+})
+
 
 /*  This is a sample API route. */
 
