@@ -561,7 +561,14 @@ var Results = function (_Component) {
                         _react2.default.createElement(
                             'h2',
                             null,
-                            'This is a modal'
+                            'Purchase Item'
+                        ),
+                        _react2.default.createElement('textarea', { placeholder: 'Enter Message here', className: 'form-control' }),
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                            'button',
+                            { className: 'btn btn-success btn-fill' },
+                            'Purchase!'
                         )
                     )
                 )
