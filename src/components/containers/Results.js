@@ -93,7 +93,7 @@ class Results extends Component {
         this.setState({
             showModal:true
         })
-        console.log('onPurchase: ' + JSON.stringify(itme))
+        console.log('onPurchase: ' + JSON.stringify(item))
     }
     
     render(){

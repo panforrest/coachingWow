@@ -502,7 +502,7 @@ var Results = function (_Component) {
             this.setState({
                 showModal: true
             });
-            console.log('onPurchase: ' + JSON.stringify(itme));
+            console.log('onPurchase: ' + JSON.stringify(item));
         }
     }, {
         key: 'render',
@@ -918,7 +918,11 @@ exports.default = function (props) {
                 _react2.default.createElement(
                     "div",
                     { style: localStyle.itemImage },
-                    _react2.default.createElement("img", { style: localStyle.itemImage, src: item.image })
+                    _react2.default.createElement(
+                        "a",
+                        { onClick: props.onPurchase.bind(undefined), herf: "#" },
+                        _react2.default.createElement("img", { style: localStyle.itemImage, src: item.image })
+                    )
                 ),
                 _react2.default.createElement(
                     "h2",
@@ -935,11 +939,7 @@ exports.default = function (props) {
                 _react2.default.createElement(
                     "div",
                     null,
-                    _react2.default.createElement(
-                        "a",
-                        { onClick: props.onPurchase.bind(undefined), href: "#" },
-                        _react2.default.createElement("img", { style: localStyle.icon, src: item.seller.image })
-                    )
+                    _react2.default.createElement("img", { style: localStyle.icon, src: item.seller.image })
                 )
             )
         )
@@ -955,7 +955,7 @@ var localStyle = {
     itemImage: {
         width: 100 + '%',
         padding: 3,
-        // border:'1px solid #ddd',
+        border: '1px solid #ddd',
         background: '#ffffa'
     }
 };

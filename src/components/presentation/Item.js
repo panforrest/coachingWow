@@ -11,14 +11,16 @@ export default (props) => {
 
             
             <div style={localStyle.itemImage}>
-                <img style={localStyle.itemImage} src={item.image} />
+                <a onClick={props.onPurchase.bind(this)} herf="#">
+                    <img style={localStyle.itemImage} src={item.image} />
+                </a> 
             </div>
             <h2>{item.name}</h2> 
             <span class="reservation-date">${item.price} </span>
             <div>
-                <a onClick={props.onPurchase.bind(this)} href="#">
-                    <img style={localStyle.icon} src={item.seller.image} />
-                </a> 
+                
+                <img style={localStyle.icon} src={item.seller.image} />
+                
                 
             </div>
         </div>    
@@ -36,7 +38,7 @@ const localStyle = {
     itemImage: {
         width:100+'%',
         padding:3,
-        // border:'1px solid #ddd',
+        border:'1px solid #ddd',
         background:'#ffffa' 
     }
 }
